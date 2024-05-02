@@ -214,7 +214,7 @@ const Create = ({ marketplace }) => {
             size="lg"
             required
             type="number"
-            placeholder="Price in CELO"
+            placeholder="Price in TRX"
             className="text-lg"
           />
           <div className="flex justify-center">
