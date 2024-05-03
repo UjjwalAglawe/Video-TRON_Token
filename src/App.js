@@ -58,11 +58,13 @@ function App() {
     }
   };
 
-  const sendTra = async () => {
+  const sendTra = async (ownerad) => {
     try {
       const tron = window.tronLink;
       const tronWeb = tron.tronWeb;
-      const toAddress = "TQsMgi7PVhE2Tqbv2CjXj4zyHJTXpixraW";
+      const toAddress = ownerad.toString();
+      console.log("To Adress",toAddress);
+      // const toAddress = "TQsMgi7PVhE2Tqbv2CjXj4zyHJTXpixraW";
       const amountInSun = 1000000;
       const amountInHex = tronWeb.toHex(amountInSun);
       const tx = await tronWeb.trx.sendTransaction(toAddress, amountInHex);

@@ -168,7 +168,10 @@ const Home = ({ marketplace, account, sendTra }) => {
   }
 
   const viewMarketItem = async (item) => {
-    const tx = await sendTra();
+
+    const owneris = await marketplace.getOwner(item.itemId).call();
+    console.log("The Owner is",owneris);
+    const tx = await sendTra(owneris);
     await new Promise(resolve => setTimeout(resolve, 5000));
     if (tx) {
 
