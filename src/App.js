@@ -12,40 +12,100 @@ import Nav from './components/Nav.jsx';
 import Purchaes from './components/Purchaes.jsx';
 // import {TronWeb} from './tronwebs/dist/js/tronweb.js'
 // const TronWeb = require('../node_modules/tronweb/dist/TronWeb.js')
+
 function App() {
 
   const [loading, setLoading] = useState(true);
   const [account, setAccount] = useState(null);
   const [marketplace, setMarketplace] = useState({});
   const [nftItem, setNFTItem] = useState({})
+  const [connecteds,setConnecteds]=useState(false);
   // const [tronWeb, setTronWeb] = useState(null);
 
   //api=7f759d6c-3584-4d7c-a32f-15b6d4cd7a33
 
   useEffect(() => {
-    checkTronLink();
-  }, []);
+    setInterval(() => {
+      if(!account)
+        {
+          console.log("Check runnings");
+          checkTronLink();
+        }
+    }, 1000);
+    // checkTronLink();
+  }, [account]);
+
+  
+  const checkTronLink = async () => {
+    // if (window && window.tronLink) {
+
+    try {
+      
+      const tron = window.tronLink;
+      const tronWeb = tron.tronWeb;
+      setConnecteds(true)
+
+    } catch (error) {
+      console.log("This is error",error);
+    }
+
+    const acc = await window.tronLink.request({ method: 'tron_requestAccounts' });
+      
+
+        try {
+          const tron = await window.tronLink;
+          const tronWeb = await tron.tronWeb;
+          console.log("This is ACC", acc);
+          // const publicAddress = tronWeb.defaultAddress.base58
+          // console.log("This is owner publicAddress",publicAddress);
+          setAccount(acc);
+        } catch (error) {
+          console.error("Error connecting to TronLink:", error);
+        
+      }
+      // else{
+      //   console.log("Not connected yet");
+      //   // checkTronLink();
+      // }
+    // }
+  };
+  const checkAccount = async () => {
+    if (!account) {
+      console.log("Check running");
+      await checkTronLink();
+      setTimeout(checkAccount, 1000); // Check again after 1 second
+    }
+  };
 
   useEffect(() => {
     if (account !== null) {
       initiContract();
     }
   }, [account]);
-
-  const checkTronLink = async () => {
-    // if (window && window.tronLink) {
-    const tron = window.tronLink;
-    const tronWeb = tron.tronWeb;
-    const acc = await window.tronLink.request({ method: 'tron_requestAccounts' });
-    try {
-      console.log("This is ACC", acc);
-      setAccount(acc);
-    } catch (error) {
-      console.error("Error connecting to TronLink:", error);
-    }
-    // }
-  };
-
+  // const news= (()=>[
+  //   window.onload = async function () {
+  //     setTimeout(async function () {
+        
+  //             tronWeb = window.tronWeb;
+  //             console.log("tronWeb : ", tronWeb);
+  //             console.log("tronweb is successfully fetched from window");
+  
+  //             try {
+  //                 var currentaddress = await tronWeb.address.fromHex((await tronWeb.trx.getAccount()).address.toString());
+  
+  //                 istronWeb = true;
+  
+  //                 var balance = await tronWeb.trx.getBalance(currentaddress);
+  //                 balance = balance / (10 ** 6);
+  
+        
+  //             } catch {
+  //                 console.log("Tronweb not defined");
+  //                 istronWeb = false;
+  //             }
+  //     }, 1000);
+  // }//window onload
+  // ])
   const initiContract = async () => {
     try {
       const tron = window.tronLink;

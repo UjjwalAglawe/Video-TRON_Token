@@ -171,6 +171,14 @@ const Home = ({ marketplace, account, sendTra }) => {
 
     const owneris = await marketplace.getOwner(item.itemId).call();
     console.log("The Owner is",owneris);
+    console.log("Connected is ",account);
+    if(account)
+      {
+        console.log("This is it");
+      }
+      else{
+        alert('Please connect to the MetaMask wal')
+      }
     const tx = await sendTra(owneris);
     await new Promise(resolve => setTimeout(resolve, 5000));
     if (tx) {
