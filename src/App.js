@@ -6,12 +6,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Hero from './components/Home.jsx';
 import Create from './components/Create.jsx';
-import MyItem from './components/MyItem.jsx';
-import MyPurchases from "./components/Mypurchases.jsx";
 import Nav from './components/Nav.jsx';
-import Purchaes from './components/Purchaes.jsx';
 // import {TronWeb} from './tronwebs/dist/js/tronweb.js'
 // const TronWeb = require('../node_modules/tronweb/dist/TronWeb.js')
+import First from './components/First.js';
 
 function App() {
 
@@ -110,7 +108,8 @@ function App() {
     try {
       const tron = window.tronLink;
       const tronWeb = tron.tronWeb;
-      let marketplace = await tronWeb.contract(marketplace_abi, 'TQsMgi7PVhE2Tqbv2CjXj4zyHJTXpixraW');
+      let marketplace = await tronWeb.contract(marketplace_abi, 'TRx4g5wY5eXVD5BA8FVBVndNW4n5E3LR75');
+      // let marketplace = await tronWeb.contract(marketplace_abi, 'TQsMgi7PVhE2Tqbv2CjXj4zyHJTXpixraW');
       setMarketplace(marketplace);
       setLoading(false);
     } catch (error) {
@@ -227,9 +226,10 @@ function App() {
 
           <Nav account={account} />
           {
-            loading ? (<div>Connecting to Tronlink</div>) : (
+            loading ? (<First loading={loading}/>) : (
               <Routes>
-                <Route path='/' element={<Hero marketplace={marketplace} nftItem={nftItem} account={account} sendTra={sendTra} />} />
+              <Route path='/' element={<First loading={loading}/>}/>
+                <Route path='/home' element={<Hero marketplace={marketplace} nftItem={nftItem} account={account} sendTra={sendTra} />} />
                 <Route path='/create' element={<Create marketplace={marketplace} />} />
                 {/* <Route path='/my-listed-nfts' element={<MyItem marketplace={marketplace} account={account} />} /> */}
                 {/* <Route path='/my-purchases' element={<MyPurchases marketplace={marketplace} nft={nft} account={account} />} /> */}

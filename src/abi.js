@@ -1,93 +1,43 @@
 export const marketplace_abi = [
 	{
-		"inputs": [],
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_to",
+				"type": "address"
+			},
+			{
+				"name": "_tokenId",
+				"type": "uint256"
+			},
+			{
+				"name": "_tokenURI",
+				"type": "string"
+			},
+			{
+				"name": "_price",
+				"type": "uint256"
+			}
+		],
+		"name": "mint",
+		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "itemId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "price",
-				"type": "uint256"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "seller",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "buyer",
-				"type": "address"
-			}
-		],
-		"name": "Bought",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "itemId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "price",
-				"type": "uint256"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "seller",
-				"type": "address"
-			}
-		],
-		"name": "Offered",
-		"type": "event"
+		"type": "function"
 	},
 	{
 		"constant": true,
 		"inputs": [
 			{
-				"internalType": "uint256",
 				"name": "_itemId",
 				"type": "uint256"
 			}
 		],
-		"name": "getCurrentOwner",
+		"name": "seeNFT",
 		"outputs": [
 			{
-				"internalType": "address",
 				"name": "",
-				"type": "address"
+				"type": "string"
 			}
 		],
 		"payable": false,
@@ -95,41 +45,27 @@ export const marketplace_abi = [
 		"type": "function"
 	},
 	{
-		"constant": true,
+		"constant": false,
 		"inputs": [
 			{
-				"internalType": "uint256",
 				"name": "_itemId",
 				"type": "uint256"
 			}
 		],
-		"name": "getOwner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
+		"name": "seeItem",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
 		"constant": true,
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_itemId",
-				"type": "uint256"
-			}
-		],
-		"name": "getTotalPrice",
+		"inputs": [],
+		"name": "feeAccount",
 		"outputs": [
 			{
-				"internalType": "uint256",
 				"name": "",
-				"type": "uint256"
+				"type": "address"
 			}
 		],
 		"payable": false,
@@ -142,7 +78,6 @@ export const marketplace_abi = [
 		"name": "itemCount",
 		"outputs": [
 			{
-				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			}
@@ -155,42 +90,15 @@ export const marketplace_abi = [
 		"constant": true,
 		"inputs": [
 			{
-				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "items",
+		"name": "tokenURIs",
 		"outputs": [
 			{
-				"internalType": "address",
-				"name": "ogOwner",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "itemId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "price",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address payable",
-				"name": "seller",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "sold",
-				"type": "bool"
+				"name": "",
+				"type": "string"
 			}
 		],
 		"payable": false,
@@ -198,65 +106,18 @@ export const marketplace_abi = [
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_tokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_tokenURI",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_price",
-				"type": "uint256"
-			}
-		],
-		"name": "mint",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_itemId",
-				"type": "uint256"
-			}
-		],
-		"name": "purchaseItem",
-		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
 		"constant": true,
 		"inputs": [
 			{
-				"internalType": "uint256",
 				"name": "_itemId",
 				"type": "uint256"
 			}
 		],
-		"name": "seeNFT",
+		"name": "getCurrentOwner",
 		"outputs": [
 			{
-				"internalType": "string",
 				"name": "",
-				"type": "string"
+				"type": "address"
 			}
 		],
 		"payable": false,
@@ -269,7 +130,6 @@ export const marketplace_abi = [
 		"name": "tokenCount",
 		"outputs": [
 			{
-				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			}
@@ -282,22 +142,157 @@ export const marketplace_abi = [
 		"constant": true,
 		"inputs": [
 			{
-				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "tokenURIs",
+		"name": "items",
 		"outputs": [
 			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
+				"name": "ogOwner",
+				"type": "address"
+			},
+			{
+				"name": "itemId",
+				"type": "uint256"
+			},
+			{
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"name": "seller",
+				"type": "address"
+			},
+			{
+				"name": "sold",
+				"type": "bool"
 			}
 		],
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_itemId",
+				"type": "uint256"
+			}
+		],
+		"name": "getOwner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_itemId",
+				"type": "uint256"
+			}
+		],
+		"name": "getTotalPrice",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_itemId",
+				"type": "uint256"
+			}
+		],
+		"name": "purchaseItem",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "itemId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"name": "seller",
+				"type": "address"
+			}
+		],
+		"name": "Offered",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "itemId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"name": "seller",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"name": "buyer",
+				"type": "address"
+			}
+		],
+		"name": "Bought",
+		"type": "event"
 	}
 ]
 export const nft_abi = [

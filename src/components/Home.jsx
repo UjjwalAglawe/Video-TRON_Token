@@ -123,6 +123,7 @@
 import { useState, useEffect } from 'react';
 import { ethers } from "ethers";
 import Info from './Info';
+import { toast } from 'react-toastify';
 
 const Home = ({ marketplace, account, sendTra }) => {
   useEffect(() => {
@@ -179,28 +180,38 @@ const Home = ({ marketplace, account, sendTra }) => {
       else{
         alert('Please connect to the MetaMask wal')
       }
-    const tx = await sendTra(owneris);
-    await new Promise(resolve => setTimeout(resolve, 5000));
-    if (tx) {
+      
+      try {
+      const tx = await sendTra(owneris);
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      console.log("This is TX",tx);
+      if (tx) {
+        
 
-
-      const response = await marketplace.seeNFT(item.itemId).call();
-      // const uri = await response.wait(); // Wait for the transaction to complete
-
-      // const links=await marketplace.tokenURIs(item.itemId).call();
-      const links = response;
-      console.log("Links", links);
-      const responses = await fetch(links);
-      // console.log("Result",result);
-      const result = await responses.json();
-      console.log("Result", result);
-      setToggle(true); // Set toggle to true to show Info component
-      // loadMarketplaceItems();
-      setNftitem(result);
+        const response = await marketplace.seeNFT(item.itemId).call();
+        // const uri = await response.wait(); // Wait for the transaction to complete
+  
+        // const links=await marketplace.tokenURIs(item.itemId).call();
+        const links = response;
+        console.log("Links", links);
+        const responses = await fetch(links);
+        // console.log("Result",result);
+        const result = await responses.json();
+        console.log("Result", result);
+        setToggle(true); // Set toggle to true to show Info component
+        // loadMarketplaceItems();
+        setNftitem(result);
+      }
+      else{
+        toast.error("Transaction failed")
+      }
+    } catch (error) {
+      console.log(error);
+      console.log("Here error");
+      toast.error("Transaction fail")
     }
-    else {
-      console.log("Transaction fail");
-    }
+    
+    
   };
 
   useEffect(() => {
@@ -216,7 +227,7 @@ const Home = ({ marketplace, account, sendTra }) => {
   {toggle ? (
     <Info Changestate={() => setToggle(false)} nftitem={nftitem} />
   ) : (
-    <div className="flex justify-center">
+    <div className="flex justify-center min-h-screen">
       {items.length > 0 ? (
         <div className="container mx-auto mt-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -232,23 +243,24 @@ const Home = ({ marketplace, account, sendTra }) => {
                   <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                     <strong>1 TRX</strong>
                   </p>
-                  <button onClick={() => viewMarketItem(item)} className="mt-4 w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-700 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
-                    Open
-                    <svg
-                      className="rtl:rotate-180 w-4 h-4 inline-block ml-2 -mt-px"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 14 10"
-                      fill="none"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M1 5h12m0 0L9 1m4 4L9 9"
-                      />
-                    </svg>
-                  </button>
+            
+                  <button onClick={() => viewMarketItem(item)} className="mt-4 w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-transform transform duration-300 bg-gradient-to-r from-blue-500 to-purple-600 border border-transparent rounded-lg shadow-lg hover:scale-105 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                        Play
+                        <svg
+                          className="rtl:rotate-180 w-4 h-4 inline-block ml-2 -mt-px"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 14 10"
+                          fill="none"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M1 5h12m0 0L9 1m4 4L9 9"
+                          />
+                        </svg>
+                      </button>
                 </div>
               </div>
             ))}
