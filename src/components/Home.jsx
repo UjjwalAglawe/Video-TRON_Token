@@ -138,31 +138,36 @@ const Home = ({ marketplace, account, sendTra }) => {
   const loadMarketplaceItems = async () => {
 
     console.log("Insside  of Load MarketPlace Items");
-    const itemCounts = await marketplace.itemCount().call();
-    const itemCount = itemCounts.toString();
-    console.log("Itemcount App", itemCount);
-    let items = [];
-    console.log("Before for");
-    for (let i = 1; i <= itemCount; i++) {
-      const item = await marketplace.items(i).call();
-      if (!item.sold) {
-        const uri = await marketplace.tokenURIs(item.tokenId).call();
-        const response = await fetch(uri);
-        const metadata = await response.json();
-        const totalPrice = await marketplace.getTotalPrice(item.itemId).call();
-        items.push({
-          totalPrice,
-          itemId: item.itemId,
-          seller: item.seller,
-          name: metadata.name,
-          description: metadata.description,
-          image: metadata.image,
-          video: metadata.video,
-        });
+    try {
+      const itemCounts = await marketplace.itemCount().call();
+      const itemCount = itemCounts.toString();
+      console.log("Itemcount App", itemCount);
+      let items = [];
+      console.log("Before for");
+      for (let i = 1; i <= itemCount; i++) {
+        const item = await marketplace.items(i).call();
+        if (!item.sold) {
+          const uri = await marketplace.tokenURIs(item.tokenId).call();
+          const response = await fetch(uri);
+          const metadata = await response.json();
+          const totalPrice = await marketplace.getTotalPrice(item.itemId).call();
+          items.push({
+            totalPrice,
+            itemId: item.itemId,
+            seller: item.seller,
+            name: metadata.name,
+            description: metadata.description,
+            image: metadata.image,
+            video: metadata.video,
+          });
+        }
       }
+      setLoading(false);
+      setItems(items);
+    } catch (error) {
+      console.log("Wallet connect inside loadmaretplace",error)
     }
-    setLoading(false);
-    setItems(items);
+
   };
   const Changestate = async () => {
     setToggle(!toggle);
@@ -171,26 +176,25 @@ const Home = ({ marketplace, account, sendTra }) => {
   const viewMarketItem = async (item) => {
 
     const owneris = await marketplace.getOwner(item.itemId).call();
-    console.log("The Owner is",owneris);
-    console.log("Connected is ",account);
-    if(account)
-      {
-        console.log("This is it");
-      }
-      else{
-        alert('Please connect to the MetaMask wal')
-      }
-      
-      try {
+    console.log("The Owner is", owneris);
+    console.log("Connected is ", account);
+    if (account) {
+      console.log("This is it");
+    }
+    else {
+      alert('Please connect to the MetaMask wal')
+    }
+
+    try {
       const tx = await sendTra(owneris);
       await new Promise(resolve => setTimeout(resolve, 5000));
-      console.log("This is TX",tx);
+      console.log("This is TX", tx);
       if (tx) {
-        
+
 
         const response = await marketplace.seeNFT(item.itemId).call();
         // const uri = await response.wait(); // Wait for the transaction to complete
-  
+
         // const links=await marketplace.tokenURIs(item.itemId).call();
         const links = response;
         console.log("Links", links);
@@ -202,7 +206,7 @@ const Home = ({ marketplace, account, sendTra }) => {
         // loadMarketplaceItems();
         setNftitem(result);
       }
-      else{
+      else {
         toast.error("Transaction failed")
       }
     } catch (error) {
@@ -210,12 +214,17 @@ const Home = ({ marketplace, account, sendTra }) => {
       console.log("Here error");
       toast.error("Transaction fail")
     }
-    
-    
+
+
   };
 
   useEffect(() => {
-    loadMarketplaceItems();
+    try {
+      loadMarketplaceItems();
+    } catch (error) {
+      console.log("Wallet connect ",error);
+    }
+
   }, []);
 
   const homeClick = () => {
@@ -224,27 +233,27 @@ const Home = ({ marketplace, account, sendTra }) => {
 
   return (
     <>
-  {toggle ? (
-    <Info Changestate={() => setToggle(false)} nftitem={nftitem} />
-  ) : (
-    <div className="flex justify-center min-h-screen">
-      {items.length > 0 ? (
-        <div className="container mx-auto mt-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {items.map((item, idx) => (
-              <div key={idx} className="bg-gray-100 rounded-lg shadow-md dark:bg-gray-800 hover:transform hover:scale-105 transition-transform duration-300">
-                <img
-                  className="rounded-t-lg object-cover w-full h-56"
-                  src={item.image}
-                  alt="flower"
-                />
-                <div className="p-4">
-                  <h5 className="text-xl font-semibold text-blue-600 dark:text-blue-400">{item.name}</h5>
-                  <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                    <strong>1 TRX</strong>
-                  </p>
-            
-                  <button onClick={() => viewMarketItem(item)} className="mt-4 w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-transform transform duration-300 bg-gradient-to-r from-blue-500 to-purple-600 border border-transparent rounded-lg shadow-lg hover:scale-105 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+      {toggle ? (
+        <Info Changestate={() => setToggle(false)} nftitem={nftitem} />
+      ) : (
+        <div className="flex justify-center min-h-screen">
+          {items.length > 0 ? (
+            <div className="container mx-auto mt-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {items.map((item, idx) => (
+                  <div key={idx} className="bg-gray-100 rounded-lg shadow-md dark:bg-gray-800 hover:transform hover:scale-105 transition-transform duration-300">
+                    <img
+                      className="rounded-t-lg object-cover w-full h-56"
+                      src={item.image}
+                      alt="flower"
+                    />
+                    <div className="p-4">
+                      <h5 className="text-xl font-semibold text-blue-600 dark:text-blue-400">{item.name}</h5>
+                      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                        <strong>1 TRX</strong>
+                      </p>
+
+                      <button onClick={() => viewMarketItem(item)} className="mt-4 w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-transform transform duration-300 bg-gradient-to-r from-blue-500 to-purple-600 border border-transparent rounded-lg shadow-lg hover:scale-105 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
                         Play
                         <svg
                           className="rtl:rotate-180 w-4 h-4 inline-block ml-2 -mt-px"
@@ -261,19 +270,19 @@ const Home = ({ marketplace, account, sendTra }) => {
                           />
                         </svg>
                       </button>
-                </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          ) : (
+            <main className="container mx-auto mt-8">
+              <h2 className="text-center text-xl font-semibold text-gray-800 dark:text-white">Loading</h2>
+            </main>
+          )}
         </div>
-      ) : (
-        <main className="container mx-auto mt-8">
-          <h2 className="text-center text-xl font-semibold text-gray-800 dark:text-white">Loading</h2>
-        </main>
       )}
-    </div>
-  )}
-</>
+    </>
 
 
 

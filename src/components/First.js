@@ -13,7 +13,8 @@ function First({ loading }) {
                     <span className='font-thin text-sky-400'> Video NFTs </span>
                 </h1>
                 <p className='pt-8 text-xl font-thin'>
-                    Create and Watch Video NFTs <br />
+                    Non-fungible tokens (NFTs) are assets <br />
+                    that have been tokenized via a blockchain. <br />
 
                 </p>
                 <Link to="/home">
