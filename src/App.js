@@ -27,8 +27,8 @@ function App() {
     setInterval(() => {
       if(!account)
         {
-          console.log("Check runnings of first useEffect");
-          console.log("account first useEffect",account);
+          // console.log("Check runnings of first useEffect");
+          // console.log("account first useEffect",account);
           // checkTronLink();             //here
         }
     }, 1000);
@@ -51,7 +51,7 @@ function App() {
     }
 
     const acc = await window.tronLink.request({ method: 'tron_requestAccounts' });
-      
+    
 
         try {
           const tron = await window.tronLink;
@@ -121,7 +121,7 @@ function App() {
         <div className="gradient-bg-welcome">
           {/* <button onClick={connect}>Con</button> */}
 
-          <Nav account={account} checkTronLink={checkTronLink}/>
+          <Nav account={account} checkTronLink={checkTronLink} loading={loading}/>
           {
             loading && !fistTime ? (<First loading={loading}/>) : (
               <Routes>
