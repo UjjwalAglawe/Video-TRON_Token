@@ -165,13 +165,17 @@ const Home = ({ marketplace, account, sendTra }) => {
       setLoading(false);
       setItems(items);
     } catch (error) {
-      console.log("Wallet connect inside loadmaretplace",error)
+      console.log("Wallet connect inside loadmaretplace", error)
     }
 
   };
   const Changestate = async () => {
     setToggle(!toggle);
   }
+  const delay = async (ms) => {
+    return new Promise((resolve) =>
+      setTimeout(resolve, ms));
+  };
 
   const viewMarketItem = async (item) => {
 
@@ -189,26 +193,40 @@ const Home = ({ marketplace, account, sendTra }) => {
       const tx = await sendTra(owneris);
       await new Promise(resolve => setTimeout(resolve, 5000));
       console.log("This is TX", tx);
-      if (tx) {
 
+      if (tx.code) {
+        if (tx.code.toString() === 'CONTRACT_VALIDATE_ERROR') {
 
-        const response = await marketplace.seeNFT(item.itemId).call();
-        // const uri = await response.wait(); // Wait for the transaction to complete
-
-        // const links=await marketplace.tokenURIs(item.itemId).call();
-        const links = response;
-        console.log("Links", links);
-        const responses = await fetch(links);
-        // console.log("Result",result);
-        const result = await responses.json();
-        console.log("Result", result);
-        setToggle(true); // Set toggle to true to show Info component
-        // loadMarketplaceItems();
-        setNftitem(result);
+          // toast.error("Transaction faileds")
+          throw 'error'
+        }
       }
       else {
-        toast.error("Transaction failed")
+        console.log("code is not present result");
+        if (tx) {
+
+
+          const response = await marketplace.seeNFT(item.itemId).call();
+          // const uri = await response.wait(); // Wait for the transaction to complete
+
+          // const links=await marketplace.tokenURIs(item.itemId).call();
+          const links = response;
+          console.log("Links", links);
+          const responses = await fetch(links);
+          // console.log("Result",result);
+          const result = await responses.json();
+          console.log("Result", result);
+          console.log("This is tx code", tx.code);
+          await delay(2000);
+          setToggle(true); // Set toggle to true to show Info component
+          // loadMarketplaceItems();
+          setNftitem(result);
+        }
+        else {
+          toast.error("Transaction failed")
+        }
       }
+
     } catch (error) {
       console.log(error);
       console.log("Here error");
@@ -222,7 +240,7 @@ const Home = ({ marketplace, account, sendTra }) => {
     try {
       loadMarketplaceItems();
     } catch (error) {
-      console.log("Wallet connect ",error);
+      console.log("Wallet connect ", error);
     }
 
   }, []);
