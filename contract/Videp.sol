@@ -120,9 +120,6 @@ contract NFTMarketplace {
         return uri;
     }
 
-    // Implement remaining functions as needed
-
-    // Dummy implementation of ownerOf function to make the contract compile
     // function ownerOf(uint256 tokenId) internal view returns (address) {
     //     return address(0);
     // }
